@@ -1,4 +1,3 @@
-/*
 --create tables
 CREATE TABLE Users (
 userID DECIMAL(20) NOT NULL PRIMARY KEY,
@@ -439,7 +438,7 @@ insert into Purchase (purchaseID, vendorID, total, purchaseDate, paidDate, produ
 select * from Purchase;
 */
 
-/*--procedure 1: new order
+--procedure 1: new order
 CREATE PROCEDURE NewOrder @orderNum DECIMAL(6), @userID decimal(6), @createdDate date,
 @updatedDate date, @preTaxTotal decimal(6), @grandTotal decimal(6), @discount varchar(5)
 AS
@@ -447,21 +446,21 @@ BEGIN
  INSERT INTO Orders(orderNum, userID, createdDate, updatedDate, preTaxTotal, grandTotal, discount)
  VALUES(@orderNum, @userID, @createdDate, @updatedDate, @preTaxTotal, @grandTotal, @discount);
 
-END*/
+END
 
-/*BEGIN TRANSACTION NewOrder;
+BEGIN TRANSACTION NewOrder;
 EXECUTE NewOrder 10023, 8035, '2021-11-29 12:41:50', '2022-01-17 16:03:45', 
 998.19, 1060.576875, 0.20;
 COMMIT TRANSACTION NewOrder;*/ 
 
-/*--procedure 2: unpaid vendor purchase 
+--procedure 2: unpaid vendor purchase 
 CREATE PROCEDURE UnpaidPurchases @paidDate date
 AS
 BEGIN
 SELECT * FROM Purchase where paidDate=@paidDate
 end;
-GO*/
-/*
+GO
+
 --procedure 2: userID and password validation
 CREATE PROCEDURE Verify @userID decimal(20), @userPassword varchar(20)
 AS
@@ -474,23 +473,22 @@ END;
 GO
 
 execute Verify @userID='8040', @userPassword='iYSHpJ0q6GXD'
-GO*/
+GO
 
-/*--procedure 3: erase wrong records
+--procedure 3: erase wrong records
 CREATE PROCEDURE DeleteData @orderNum decimal(6)
 AS
 BEGIN
 DELETE FROM Orders WHERE orderNum = @orderNum;
 END;
 GO
-*/
-/*
+
+
 execute DeleteData @orderNum = 10022
 go
 
 select * from Orders where orderNum=10022;
-*/
-/*
+
 create table priceChangeChecker (
 itemPriceChangeID decimal(20) not null primary key,
 oldPrice decimal(6) not null,
@@ -498,11 +496,10 @@ newPrice decimal(6) not null,
 itemID decimal(20) not null,
 updatedDate date not null,
 foreign key (itemID) references Item(itemID));
-*/
-/*
+
 select * from priceChangeChecker;
-*/
-/*
+
+
 --create trigger
 CREATE TRIGGER PriceChangeTrigger
 ON Item
@@ -520,9 +517,9 @@ BEGIN
 		(SELECT CarID FROM INSERTED),
 		GETDATE());
 END;
-*/
 
-/*update Item set price=20 where itemID = 5001;*/
+
+update Item set price=20 where itemID = 5001;*/
 
 /*create table PurchasePayoff(
 balancePayoffID decimal(12) not null primary key,
@@ -532,9 +529,9 @@ purchaseID decimal(20) not null,
 paidDate date not null,
 foreign key (purchaseID) references Purchase(purchaseID));
 
-select * from PurchasePayoff;*/
+select * from PurchasePayoff;
 
-/*
+
 create trigger PurchasePayoffTrigger
 on Purchase
 after update
@@ -551,21 +548,21 @@ begin
 		(select purchaseID from inserted),
 		GETDATE());
 end;
-*/
-/*
-update Purchase set paidDate = '2022-4-23' where purchaseID = 9512;*/
+	
+update Purchase set paidDate = '2022-4-23' where purchaseID = 9512;
 
-/*select Users.userID, firstName, lastName, userType from Users 
+select Users.userID, firstName, lastName, userType from Users 
 join Purchase on Users.userID = Purchase.userID
-group by userType, firstName, lastName, Users.userID*/
+group by userType, firstName, lastName, Users.userID
+;
 
-/*select min(price) as least_spend, itemTitle, itemType from Item 
+select min(price) as least_spend, itemTitle, itemType from Item 
 group by itemTitle, itemType, price
-order by price asc*/
+order by price asc
 
-/*select Users.userID, firstName, lastName from Users
+select Users.userID, firstName, lastName from Users
 join tableReservation on Users.userID = tableReservation.userID
-group by Users.userID, firstName, lastName;*/
+group by Users.userID, firstName, lastName;
 
 select Purchase.paidDate, total, Purchase.userID, Users.firstName, Users.lastName from Purchase 
 join purchasePayoff on Purchase.paidDate = purchasePayoff.paidDate
